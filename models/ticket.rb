@@ -18,8 +18,28 @@ class Ticket
     ($1, $2)
     RETURNING id"
     values = [@customer_id, @film_id]
-    visit = SqlRunner.run( sql,values ).first
+    ticket = SqlRunner.run( sql,values ).first
     @id = ticket['id'].to_i
+  end
+
+  def Ticket.all()
+    sql = "SELECT * FROM tickets"
+    customers = SqlRunner.run(sql)
+    result = tickets.map{|ticket| Ticket.new (ticket)}
+    return result
+  end
+
+  def Ticket.delete_all()
+    sql = "DELETE FROM tickets"
+    SqlRunner.run(sql)
+  end
+
+  def update()
+    sql = "UPDATE tickets SET (customer_id, film_id) =
+      ($1, $2)
+      WHERE id =$3"
+      values = [@customer_id, @film_id, @id]
+      SqlRunner.run(sql, values)
   end
 
 

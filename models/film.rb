@@ -18,8 +18,28 @@ class Film
       ($1, $2)
       RETURNING id"
       values = [@title, @price]
-      visit = SqlRunner.run( sql,values ).first
+      film = SqlRunner.run( sql,values ).first
       @id = film['id'].to_i
+  end
+
+  def Film.all()
+    sql = "SELECT * FROM films"
+    customers = SqlRunner.run(sql)
+    result = films.map{|film| Film.new (film)}
+    return result
+  end
+
+  def Film.delete_all()
+    sql = "DELETE FROM films"
+    SqlRunner.run(sql)
+  end
+
+  def update()
+    sql = "UPDATE films SET (title, price) =
+      ($1, $2)
+      WHERE id =$3"
+      values = [@title, @price, @id]
+      SqlRunner.run(sql, values)
   end
 
 
